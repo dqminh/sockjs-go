@@ -3,6 +3,7 @@ package sockjs
 import (
 	"code.google.com/p/go.net/websocket"
 	"net/http"
+	"time"
 )
 
 func (ctx *context) RawWebSocketHandler(rw http.ResponseWriter, req *http.Request) {
@@ -37,6 +38,8 @@ func (ctx *context) RawWebSocketHandler(rw http.ResponseWriter, req *http.Reques
 			case <-conn_interrupted:
 				conn.Close()
 				return
+			case <-time.After(ctx.Config.HeartbeatDelay):
+				net_conn.Write([]byte("h"))
 			}
 		}
 	})

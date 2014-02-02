@@ -28,12 +28,14 @@ func NewRouter(baseUrl string, h HandlerFunc, cfg Config) http.Handler {
 	ss.HandleFunc("/jsonp_send", ctx.JsonpSendHandler).Methods("POST")
 	ss.HandleFunc("/htmlfile", ctx.HtmlfileHandler).Methods("GET")
 	ss.HandleFunc("/websocket", webSocketPostHandler).Methods("POST")
+	//TODO: fix raw websocket
 	ss.HandleFunc("/websocket", ctx.WebSocketHandler).Methods("GET")
 
 	sub.HandleFunc("/iframe.html", ctx.iframeHandler).Methods("GET")
 	sub.HandleFunc("/iframe-.html", ctx.iframeHandler).Methods("GET")
 	sub.HandleFunc("/iframe-{ver}.html", ctx.iframeHandler).Methods("GET")
 	sub.HandleFunc("/", welcomeHandler).Methods("GET")
+	//TODO: fix raw websocket
 	sub.HandleFunc("/websocket", ctx.RawWebSocketHandler).Methods("GET")
 	return router
 }

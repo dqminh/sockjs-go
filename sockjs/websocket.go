@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 //websocket specific connection
@@ -89,6 +90,8 @@ func (ctx *context) WebSocketHandler(rw http.ResponseWriter, req *http.Request) 
 			case <-conn_interrupted:
 				conn.Close()
 				return
+			case <-time.After(ctx.Config.HeartbeatDelay):
+				net_conn.Write([]byte("h"))
 			}
 		}
 
